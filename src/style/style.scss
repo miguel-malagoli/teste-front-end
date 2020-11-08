@@ -1,0 +1,122 @@
+// Tema de cores
+$color-dark: #292929;
+$color-light: #C5C5C5;
+$color-theme: #771F1F;
+$color-light-hl: white;
+$color-theme-hl: #961E1E;
+
+// Padronizações iniciais
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+:root {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    background-color: $color-dark;
+}
+
+// Bloco "Pesquisa"
+.pesquisa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: $color-dark;
+    height: calc(50vh + 60px);
+    width: 200vw;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    transition: left .5s ease, top .5s ease;
+    &.pesquisa_top {
+        top: calc(-50vh + 60px);
+    }
+    &.pesquisa_left {
+        left: -100vw;
+    }
+
+    .pesquisa__metade {
+        flex: 1;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pesquisa__barra {
+        position: relative;
+        top: 0;
+        background-color: transparent;
+        height: 72px;
+        width: 100%;
+        margin: 0 24px;
+        border-radius: 12px;
+        display: flex;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
+        transition: top .25s ease, box-shadow .25s ease;
+        &.pesquisa__barra_foco {
+            top: -8px;
+            box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
+
+            .pesquisa__fundo {
+                background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
+            }
+
+            .pesquisa__buscar {
+                background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
+            }
+        }
+    }
+
+    .pesquisa__fundo {
+        flex-grow: 1;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        background: linear-gradient(135deg, transparent, $color-light), $color-light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background .25s ease;
+    }
+
+    .pesquisa__input {
+        border: none;
+        background-color: transparent;
+        margin: 24px;
+        width: 100%;
+        color: #292929;
+        font-size: 1.25rem;
+        font-weight: 300;
+        &:focus {
+            outline: none;
+        }
+        &::placeholder {
+            opacity: .9;
+        }
+    }
+
+    .pesquisa__buscar {
+        width: 72px;
+        background: linear-gradient(135deg, transparent, $color-theme), $color-theme;
+        border: none;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background .25s ease;
+    }
+    
+    .pesquisa__icone {
+        height: 1.75rem;
+        width: 1.75rem;
+        fill: white;
+    }
+    
+    .pesquisa__titulo {
+        background-color: red;
+        height: 48px;
+        width: 30vw;
+    }
+}
