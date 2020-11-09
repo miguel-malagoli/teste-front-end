@@ -303,6 +303,7 @@ $color-theme-hl: #961E1E;
 
     .resultado__dados {
         flex-grow: 1;
+        overflow: hidden;
     }
 
     .resultado__titulo {
@@ -314,6 +315,7 @@ $color-theme-hl: #961E1E;
         transition: opacity .25s ease, max-height .25s ease, margin .25s ease;
         opacity: 1;
         max-height: 4.5rem;
+        overflow: hidden;
     }
 
     .resultado__canal {
@@ -330,6 +332,10 @@ $color-theme-hl: #961E1E;
         transition: opacity .25s ease, max-height .25s ease;
         opacity: 0;
         max-height: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
     }
 
     .resultado__descricao {
