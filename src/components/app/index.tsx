@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Pesquisa from '../pesquisa';
 import Lista, {ChannelRef, StatsRef} from '../lista';
 import Carregamento from '../carregamento';
+import Erro from '../erro';
 
 const App = () => {
 
@@ -15,12 +16,15 @@ const App = () => {
     const [activeResult, setActiveResult] = useState<string | null>(null);
     const [activeTitle, setActiveTitle] = useState<string | null>(null);
     const [listTransition, setListTransition] = useState(false);
+    const [searchError, setSearchError] = useState<any>(null);
     // Hooks de referência
     const loading = useRef<HTMLDivElement>(null);
     // Hooks de efeito
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            () => {search(pageToken)},
+        const observer = new IntersectionObserver(() => {
+                search(pageToken);
+                if (loading.current) observer.unobserve(loading.current);
+            },
             {
                 root: null,
                 rootMargin: '200px 0px 0px 0px',
@@ -120,6 +124,10 @@ const App = () => {
                     '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
                 );
                 xmlDetails.send();
+
+            } else if (xmlResults.readyState === 4 && xmlResults.status >= 400) {
+                setSearchError(JSON.parse(xmlResults.responseText).error);
+                console.log(JSON.parse(xmlResults.responseText));
             }
         };
 
@@ -157,7 +165,7 @@ const App = () => {
 			<Pesquisa
                 terms={terms}
                 handleTerms={setTerms}
-                hasResults={(results !== null)}
+                up={(results !== null || searchError !== null)}
                 handleSearch={search}
                 activeTitle={activeTitle}
                 handleClear={() => {
@@ -165,7 +173,10 @@ const App = () => {
                     setActiveTitle(null);
                 }}
             />
-			<Lista
+            {searchError ?
+            <Erro text={searchError} />
+            :
+            <Lista
                 results={results}
                 statistics={statistics}
                 channels={channels}
@@ -173,7 +184,7 @@ const App = () => {
                 activeResult={activeResult}
                 handleActiveResult={handleSelect}
                 transition={listTransition}
-            />
+            />}
             {results && <Carregamento hasMoreResults={true} elementRef={loading} />}
 		</div>
 	);

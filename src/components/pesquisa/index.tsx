@@ -5,7 +5,7 @@ const Pesquisa = (props: {
         terms: string
         handleTerms: (terms: string) => void,
         handleSearch: () => void,
-        hasResults: boolean,
+        up: boolean,
         activeTitle: string | null,
         handleClear: () => void
     }) => {
@@ -27,7 +27,7 @@ const Pesquisa = (props: {
 
     // Renderizar
     return (
-        <header className={'pesquisa' + (props.hasResults ? ' pesquisa_top' : '') + (props.activeTitle ? ' pesquisa_left' : '')}>
+        <header className={'pesquisa' + (props.up ? ' pesquisa_top' : '') + (props.activeTitle ? ' pesquisa_left' : '')}>
             <div className="pesquisa__metade">
                 <form className={'pesquisa__barra' + (focus ? ' pesquisa__barra_foco' : '')}
                     onFocus={() => {setFocus(true)}}
