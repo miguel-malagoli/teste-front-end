@@ -2,7 +2,9 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 // Componente de pesquisa
 const Pesquisa = (props: {
-        handleSearch: (terms: string) => void,
+        terms: string
+        handleTerms: (terms: string) => void,
+        handleSearch: () => void,
         hasResults: boolean,
         activeTitle: string | null,
         handleClear: () => void
@@ -10,16 +12,16 @@ const Pesquisa = (props: {
 
     // Hooks de estado
     const [focus, setFocus] = useState(false);
-    const [terms, setTerms] = useState('');
+    //const [terms, setTerms] = useState('');
 
     // Receber input do usuário
     function changeTerms(event: ChangeEvent<HTMLInputElement>) {
-        setTerms(event.target.value.replace(/[^a-zA-Z0-9 ]/g, ''));
+        props.handleTerms(event.target.value.replace(/[^a-zA-Z0-9 ]/g, ''));
     }
 
     // Realizar pesquisa com os termos atuais
     function search(event: FormEvent) {
-        props.handleSearch(terms);
+        props.handleSearch();
         event.preventDefault();
     }
 
@@ -37,7 +39,7 @@ const Pesquisa = (props: {
                             type="text"
                             name="terms"
                             placeholder="Pesquisar..."
-                            value={terms}
+                            value={props.terms}
                             onChange={changeTerms}
                             required
                             autoFocus

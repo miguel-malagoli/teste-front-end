@@ -166,6 +166,7 @@ $color-theme-hl: #961E1E;
     padding: 104px 24px 24px;
     opacity: 1;
     transition: opacity .15s linear;
+    min-height: calc(100vh - 64px);
     &.lista_transicao {
         opacity: 0;
     }
@@ -436,5 +437,65 @@ $color-theme-hl: #961E1E;
         width: 4px;
         background-color: transparent;
         flex: 1;
+    }
+}
+
+// Bloco "Carregamento"
+.carregamento {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, transparent, $color-theme), $color-theme;
+
+    .carregamento__fim {
+        color: $color-light-hl;
+        font-family: 'Roboto';
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 1.125rem;
+        line-height: 1.375rem;
+    }
+
+    .carregamento__animacao {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carregamento__ponto {
+        position: relative;
+        height: 16px;
+        width: 16px;
+        margin: 0 6px;
+        border-radius: 50%;
+        background-color: white;
+        animation-name: carregando;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease;
+    }
+}
+
+@keyframes carregando {
+    0% {
+        background: linear-gradient(135deg, transparent, $color-light), $color-light;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
+        top: 0;
+    }
+    25% {
+        background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
+        top: -8px;
+    }
+    50% {
+        background: linear-gradient(135deg, transparent, $color-light), $color-light;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
+        top: 0;
+    }
+    100% {
+        background: linear-gradient(135deg, transparent, $color-light), $color-light;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
+        top: 0;
     }
 }
