@@ -1,11 +1,13 @@
-import { stringify } from 'querystring';
 import React from 'react';
 
 const Resultado = (props: {
         video: any,
         profileImg: string,
         stats: any,
-        active: boolean
+        active: boolean,
+        hidden: boolean,
+        handleSelect: (id: string | null) => void,
+        handleTitle: (title: string |null) => void
     }) => {
 
     const likeRatio = props.stats ?
@@ -20,8 +22,14 @@ const Resultado = (props: {
             key={props.video.id.videoId}
             className={
                 'resultado' +
-                (props.active ? ' resulatdo_ativo' : '')
+                (props.active ? ' resultado_ativo' : '') +
+                (props.hidden ? ' resultado_escondido' : '')
             }
+            tabIndex={0}
+            onClick={(props.active ? () => {} : () => {
+                props.handleTitle(props.video.snippet.title);
+                props.handleSelect(props.video.id.videoId);
+            })}
         >
             <div className="resultado__conteudo">
                 <div className="resultado__tela">
@@ -44,7 +52,7 @@ const Resultado = (props: {
                         src={props.profileImg}
                     />
                     <div className="resultado__dados">
-                        <div className="resultado__titulo">
+                        <div className={'resultado__titulo ' + props.video.id.videoId}>
                             {props.video.snippet.title}
                         </div>
                         <div className="resultado__canal">
@@ -96,8 +104,14 @@ const Resultado = (props: {
                     {props.active ? props.stats?.description : props.video.snippet.description}
                 </div>
             </div>
-            <button className="resultado__detalhes" type="button">
-                +  Detalhes
+            <button className="resultado__detalhes"
+                type="button"
+                tabIndex={-1}
+                onClick={(props.active ? () => {
+                    props.handleTitle(null);
+                    props.handleSelect(null);
+                } : () => {})}>
+                {(props.active ? '-  Voltar' : '+  Detalhes')}
             </button>
         </li>
     );

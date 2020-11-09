@@ -66,11 +66,11 @@ $color-theme-hl: #961E1E;
             top: -8px;
             box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
 
-            .pesquisa__fundo {
+            .pesquisa__fundo, .pesquisa__titulo {
                 background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
             }
 
-            .pesquisa__buscar {
+            .pesquisa__buscar, .pesquisa__voltar {
                 background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
             }
         }
@@ -120,25 +120,50 @@ $color-theme-hl: #961E1E;
         width: 1.75rem;
         fill: $color-light-hl;
     }
+
+    .pesquisa__voltar {
+        flex-shrink: 0;
+        width: 72px;
+        background: linear-gradient(135deg, transparent, $color-theme), $color-theme;
+        border: none;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background .25s ease;
+    }
     
     .pesquisa__titulo {
-        background-color: red;
-        height: 48px;
-        width: 30vw;
+        flex-grow: 1;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        background: linear-gradient(135deg, transparent, $color-light), $color-light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background .25s ease;
+        padding: 12px;
+    }
+
+    .pesquisa__texto {
+        font-family: 'Roboto';
+        font-weight: 700;
+        color: black;
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+        max-height: 3rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
     }
 }
 
 // Bloco "Lista"
 .lista {
     position: relative;
-    left: 0;
     width: 100%;
-    padding: 104px 24px;
-    transition: left .5s ease;
-
-    &.lista_escondida {
-        left: -100%;
-    }
+    padding: 104px 24px 24px;
 }
 
 // Bloco "Resultado"
@@ -150,8 +175,23 @@ $color-theme-hl: #961E1E;
     flex-direction: column;
     margin-top: 24px;
     box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
-    transition: top .25s ease, box-shadow .25s ease;
-    &.resultado_ativo, &:hover {
+    transition:
+        top .25s ease,
+        left .5s ease,
+        opacity .5s ease,
+        box-shadow .25s ease,
+        max-height .25s ease,
+        min-height .25s ease;
+    min-height: 0;
+    max-height: 800px;
+    overflow: hidden;
+    opacity: 1;
+    float: none;
+    clear: both;
+    &:focus {
+        outline: none;
+    }
+    &:hover {
         top: -8px;
         box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
 
@@ -163,6 +203,43 @@ $color-theme-hl: #961E1E;
             background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
         }
     }
+    &.resultado_escondido {
+        min-height: 0;
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+        margin-top: 0;
+    }
+    &.resultado_ativo {
+        top: -8px;
+        box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
+        min-height: calc(100vh - 128px);
+        max-height: 1000vh;
+        opacity: 1;
+        pointer-events: all;
+        float: none;
+        clear: both;
+        margin-top: 24px;
+
+        .resultado__conteudo {
+            background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
+        }
+
+        .resultado__detalhes {
+            background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
+        }
+
+        .resultado__titulo {
+            opacity: 0;
+            max-height: 0;
+            margin-bottom: 0;
+        }
+
+        .resultado__visualizacoes {
+            opacity: 1;
+            max-height: 3rem;
+        }
+    }
 
     .resultado__conteudo {
         background: linear-gradient(135deg, transparent, $color-light), $color-light;
@@ -170,6 +247,7 @@ $color-theme-hl: #961E1E;
         border-top-right-radius: 8px;
         padding: 16px;
         transition: background .25s ease;
+        flex-grow: 1;
     }
 
     .resultado__tela {
@@ -224,7 +302,10 @@ $color-theme-hl: #961E1E;
         font-weight: 700;
         font-size: 1.25rem;
         line-height: 1.5rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+        transition: opacity .25s ease, max-height .25s ease, margin .25s ease;
+        opacity: 1;
+        max-height: 4.5rem;
     }
 
     .resultado__canal {
@@ -237,7 +318,7 @@ $color-theme-hl: #961E1E;
         font-family: 'Roboto';
         font-weight: 400;
         font-size: 1.375rem;
-        margin-top: 0.5rem;
+        margin-top: 0.2rem;
         transition: opacity .25s ease, max-height .25s ease;
         opacity: 0;
         max-height: 0;
@@ -266,6 +347,9 @@ $color-theme-hl: #961E1E;
         line-height: 1.375rem;
         padding: 1rem 0;
         transition: background .25s ease;
+        &:focus {
+            outline: none;
+        }
     }
 }
 

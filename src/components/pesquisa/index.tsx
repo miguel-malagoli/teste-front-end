@@ -1,10 +1,14 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 // Componente de pesquisa
-const Pesquisa = (props: {handleSearch: (terms: string) => void, hasResults: boolean}) => {
+const Pesquisa = (props: {
+        handleSearch: (terms: string) => void,
+        hasResults: boolean,
+        activeTitle: string | null,
+        handleClear: () => void
+    }) => {
 
     // Hooks de estado
-    const [left, setLeft] = useState(false);
     const [focus, setFocus] = useState(false);
     const [terms, setTerms] = useState('');
 
@@ -21,7 +25,7 @@ const Pesquisa = (props: {handleSearch: (terms: string) => void, hasResults: boo
 
     // Renderizar
     return (
-        <header className={'pesquisa' + (props.hasResults ? ' pesquisa_top' : '') + (left ? ' pesquisa_left' : '')}>
+        <header className={'pesquisa' + (props.hasResults ? ' pesquisa_top' : '') + (props.activeTitle ? ' pesquisa_left' : '')}>
             <div className="pesquisa__metade">
                 <form className={'pesquisa__barra' + (focus ? ' pesquisa__barra_foco' : '')}
                     onFocus={() => {setFocus(true)}}
@@ -53,10 +57,18 @@ const Pesquisa = (props: {handleSearch: (terms: string) => void, hasResults: boo
                 </form>
             </div>
             <div className="pesquisa__metade">
-                <button className="pesquisa__voltar" type="button">
-
-                </button>
-                <div className="pesquisa__titulo">
+                <div className="pesquisa__barra">
+                    <button className="pesquisa__voltar" type="button" onClick={() => {props.handleClear()}}>
+                        <svg className="pesquisa__icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img">
+                            <title>Voltar</title>
+                            <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>
+                        </svg>
+                    </button>
+                    <div className="pesquisa__titulo">
+                        <p className="pesquisa__texto">
+                            {props.activeTitle}
+                        </p>
+                    </div>
                 </div>
             </div>
         </header>

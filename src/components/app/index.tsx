@@ -8,7 +8,9 @@ const App = () => {
 	const [results, setResults] = useState<Array<never> | null>(null);
 	const [statistics, setStatistics] = useState<StatsRef>({});
 	const [channels, setChannels] = useState<ChannelRef>({});
-	const [pageToken, setPageToken] = useState('');
+    const [pageToken, setPageToken] = useState('');
+    const [activeResult, setActiveResult] = useState<string | null>(null);
+    const [activeTitle, setActiveTitle] = useState<string | null>(null);
 
 	// Realizar pesquisa com os termos atuais
     function search(terms: string) {
@@ -65,11 +67,6 @@ const App = () => {
 								}, {}
 							)
 						);
-                        // setStatistics(
-                        //     JSON.parse(xmlDetails.responseText).items.map(
-                        //         (i: any) => i.statistics
-                        //     )
-                        // );
                     }
                 }
                 xmlDetails.open(
@@ -92,10 +89,38 @@ const App = () => {
         xmlResults.send();
     }
 
+    function handleSelect(id: string | null) {
+        const prevId = activeResult
+        setActiveResult(id);
+        if (prevId && id === null) {
+            setTimeout(
+                () => document.getElementsByClassName(prevId)[0].scrollIntoView({behavior: "auto", block: "center"}),
+                100
+            );
+        } else if (id) {
+            window.scrollTo({top: 0, left: 0, behavior: "auto"});
+        }
+    }
+
 	return (
 		<div className="app">
-			<Pesquisa hasResults={(results !== null)} handleSearch={search} />
-			<Lista results={results} statistics={statistics} channels={channels} />
+			<Pesquisa
+                hasResults={(results !== null)}
+                handleSearch={search}
+                activeTitle={activeTitle}
+                handleClear={() => {
+                    handleSelect(null);
+                    setActiveTitle(null);
+                }}
+            />
+			<Lista
+                results={results}
+                statistics={statistics}
+                channels={channels}
+                handleTitle={setActiveTitle}
+                activeResult={activeResult}
+                handleActiveResult={handleSelect}
+            />
 		</div>
 	);
 }
