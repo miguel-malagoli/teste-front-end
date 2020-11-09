@@ -1,71 +1,27 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 // Componente de pesquisa
-const Pesquisa = () => {
+const Pesquisa = (props: {handleSearch: (terms: string) => void, hasResults: boolean}) => {
 
     // Hooks de estado
     const [left, setLeft] = useState(false);
     const [focus, setFocus] = useState(false);
     const [terms, setTerms] = useState('');
-    const [results, setResults] = useState<Array<never> | null>(null);
-    const [pageToken, setPageToken] = useState('');
-    const [statistics, setStatistics] = useState([]);
 
     // Receber input do usuário
     function changeTerms(event: ChangeEvent<HTMLInputElement>) {
-        setTerms(event.target.value.replace(/[^a-zA-Z0-9]/g, ''));
+        setTerms(event.target.value.replace(/[^a-zA-Z0-9 ]/g, ''));
     }
 
     // Realizar pesquisa com os termos atuais
     function search(event: FormEvent) {
-        // Request para os snippets
-        const xmlResults = new XMLHttpRequest();
-        xmlResults.onreadystatechange = () => {
-            if (xmlResults.readyState === 4 && xmlResults.status === 200) {
-                const response = JSON.parse(xmlResults.responseText);
-                console.log(response);
-
-                setPageToken(response.nextPageToken);
-                setResults(response.items);
-                const ids: string = response.items.map((i: any) => i.id.videoId).join();
-
-                // Segunda request usando as IDs dos videos para conseguir seus detalhes
-                const xmlDetails = new XMLHttpRequest();
-                xmlDetails.onreadystatechange = () => {
-                    if (xmlDetails.readyState === 4 && xmlDetails.status === 200) {
-                        console.log(JSON.parse(xmlDetails.responseText));
-                        setStatistics(
-                            JSON.parse(xmlDetails.responseText).items.map(
-                                (i: any) => i.statistics
-                            )
-                        );
-                    }
-                }
-
-                xmlDetails.open(
-                    'GET',
-                    'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' +
-                    ids + 
-                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-                );
-                xmlDetails.send();
-            }
-        };
-
-        xmlResults.open(
-            'GET',
-            'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
-            terms.replace(/[^a-zA-Z0-9]/g, '') +
-            '&pageToken=' + pageToken +
-            '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-        );
-        xmlResults.send();
+        props.handleSearch(terms);
         event.preventDefault();
     }
 
     // Renderizar
     return (
-        <header className={'pesquisa' + (results ? ' pesquisa_top' : '') + (left ? ' pesquisa_left' : '')}>
+        <header className={'pesquisa' + (props.hasResults ? ' pesquisa_top' : '') + (left ? ' pesquisa_left' : '')}>
             <div className="pesquisa__metade">
                 <form className={'pesquisa__barra' + (focus ? ' pesquisa__barra_foco' : '')}
                     onFocus={() => {setFocus(true)}}
@@ -80,6 +36,7 @@ const Pesquisa = () => {
                             value={terms}
                             onChange={changeTerms}
                             required
+                            autoFocus
                         />
                     </div>
                     <button className="pesquisa__buscar" type="submit">
