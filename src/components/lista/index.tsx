@@ -19,26 +19,12 @@ const Lista = (props: {
     channels: ChannelRef,
     handleTitle: (title: string | null) => void,
     activeResult: string | null,
-    handleActiveResult: (id: string | null) => void
+    handleActiveResult: (id: string | null) => void,
+    transition: boolean
     }) => {
 
-    
-
-    // function handleSelect(id: string | null) {
-    //     const prevId = props.activeResult
-    //     props.handleActiveResult(id);
-    //     if (prevId && id === null) {
-    //         setTimeout(
-    //             () => document.getElementsByClassName(prevId)[0].scrollIntoView({behavior: "auto", block: "center"}),
-    //             100
-    //         );
-    //     } else if (id) {
-    //         window.scrollTo({top: 0, left: 0, behavior: "auto"});
-    //     }
-    // }
-
     return (
-        <ul className="lista">
+        <ul className={'lista' + (props.transition ? ' lista_transicao' : '')}>
             {props.results?.map((r: any) => {
             return (
                 <Resultado

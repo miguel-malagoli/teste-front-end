@@ -59,7 +59,7 @@ const Resultado = (props: {
                             {props.video.snippet.channelTitle}
                         </div>
                         <div className="resultado__visualizacoes">
-                            {props.stats?.viewCount + ' Visualizações'}
+                            {props.stats?.viewCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' Visualizações'}
                         </div>
                     </div>
                 </div>
@@ -78,10 +78,14 @@ const Resultado = (props: {
                                     0-.565-.424-1.109-1.26-1.221z"
                                 />
                             </svg>
-                            <p className="interacao__numero">{props.stats?.likeCount}</p>
+                            <p className="interacao__numero">
+                                {props.stats?.likeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                            </p>
                         </div>
                         <div className="interacao__metade">
-                            <p className="interacao__numero">{props.stats?.dislikeCount}</p>
+                            <p className="interacao__numero">
+                                {props.stats?.dislikeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                            </p>
                             <svg className="interacao__dislike" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img">
                                 <title>Dislike</title>
                                 <path d="M5 14h-5v-12h5v12zm18.875-4.809c0-.646-.555-1.32-1.688-1.41-.695-.055-.868-.623-.031-.812.701-.159

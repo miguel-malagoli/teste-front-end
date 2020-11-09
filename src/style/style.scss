@@ -164,6 +164,11 @@ $color-theme-hl: #961E1E;
     position: relative;
     width: 100%;
     padding: 104px 24px 24px;
+    opacity: 1;
+    transition: opacity .15s linear;
+    &.lista_transicao {
+        opacity: 0;
+    }
 }
 
 // Bloco "Resultado"
@@ -179,9 +184,7 @@ $color-theme-hl: #961E1E;
         top .25s ease,
         left .5s ease,
         opacity .5s ease,
-        box-shadow .25s ease,
-        max-height .25s ease,
-        min-height .25s ease;
+        box-shadow .25s ease;
     min-height: 0;
     max-height: 800px;
     overflow: hidden;
@@ -227,6 +230,11 @@ $color-theme-hl: #961E1E;
 
         .resultado__detalhes {
             background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
+        }
+
+        .resultado__video {
+            opacity: 1;
+            pointer-events: all;
         }
 
         .resultado__titulo {

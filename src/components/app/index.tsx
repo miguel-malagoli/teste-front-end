@@ -11,6 +11,7 @@ const App = () => {
     const [pageToken, setPageToken] = useState('');
     const [activeResult, setActiveResult] = useState<string | null>(null);
     const [activeTitle, setActiveTitle] = useState<string | null>(null);
+    const [listTransition, setListTransition] = useState(false);
 
 	// Realizar pesquisa com os termos atuais
     function search(terms: string) {
@@ -90,15 +91,21 @@ const App = () => {
     }
 
     function handleSelect(id: string | null) {
+        setListTransition(true);
         const prevId = activeResult
-        setActiveResult(id);
+        
         if (prevId && id === null) {
-            setTimeout(
-                () => document.getElementsByClassName(prevId)[0].scrollIntoView({behavior: "auto", block: "center"}),
-                100
+            setTimeout(() => {
+                    setActiveResult(id);
+                    document.getElementsByClassName(prevId)[0].scrollIntoView({behavior: "auto", block: "center"});
+                    setListTransition(false);
+                },
+                200
             );
         } else if (id) {
             window.scrollTo({top: 0, left: 0, behavior: "auto"});
+            setListTransition(false);
+            setActiveResult(id);
         }
     }
 
@@ -120,6 +127,7 @@ const App = () => {
                 handleTitle={setActiveTitle}
                 activeResult={activeResult}
                 handleActiveResult={handleSelect}
+                transition={listTransition}
             />
 		</div>
 	);
