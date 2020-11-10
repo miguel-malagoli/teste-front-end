@@ -186,6 +186,11 @@ $color-theme-hl: #961E1E;
         overflow: hidden;
         text-overflow: ellipsis;
         word-wrap: break-word;
+        text-align: center;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1.25vw;
+            line-height: 1.5vw;
+        }
     }
 }
 
@@ -220,6 +225,10 @@ $color-theme-hl: #961E1E;
     align-items: stretch;
     justify-content: center;
     flex-flow: row wrap;
+    @media only screen and (min-width: 1200px) {
+        padding: 7vw 10vw 6vw;
+        min-height: calc(100vh - 5.5vw);
+    }
     &.lista_transicao {
         opacity: 0;
     }
@@ -230,6 +239,7 @@ $color-theme-hl: #961E1E;
     position: relative;
     top: 0;
     background-color: transparent;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     margin: 24px 12px 0;
@@ -505,6 +515,10 @@ $color-theme-hl: #961E1E;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, transparent, $color-theme), $color-theme;
+    @media only screen and (min-width: 1200px) {
+        margin-top: 1.5vw;
+        height: 4vw;
+    }
 
     .carregamento__fim {
         color: $color-light-hl;
@@ -513,6 +527,10 @@ $color-theme-hl: #961E1E;
         text-transform: uppercase;
         font-size: 1.125rem;
         line-height: 1.375rem;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1.25vw;
+            line-height: 1.5vw;
+        }
     }
 
     .carregamento__animacao {
@@ -532,6 +550,10 @@ $color-theme-hl: #961E1E;
         animation-duration: 1.5s;
         animation-iteration-count: infinite;
         animation-timing-function: ease;
+        @media only screen and (min-width: 1200px) {
+            width: 1vw;
+            height: 1vw;
+        }
     }
 }
 

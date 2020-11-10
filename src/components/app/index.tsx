@@ -76,7 +76,6 @@ const App = () => {
                     '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
                 );
                 xmlChannels.send();
-
                 // Terceira request usando as IDs dos videos para conseguir seus detalhes
                 const xmlDetails = new XMLHttpRequest();
                 xmlDetails.onreadystatechange = () => {
@@ -110,7 +109,6 @@ const App = () => {
                     setPageToken('');
                     setSearchEnd(true);
                 }
-
             } else if (xmlResults.readyState === 4 && xmlResults.status >= 400) {
                 setSearchError(JSON.parse(xmlResults.responseText).error);
                 console.log(JSON.parse(xmlResults.responseText));
@@ -146,7 +144,6 @@ const App = () => {
                 if (results) setResults(results.concat(newItems));
 				const videoIDs: string = newItems.map((i: any) => i.id.videoId).join();
 				const channelIDs: string = newItems.map((i: any) => i.snippet.channelId).join();
-
 				// Segunda request usando as IDs dos canais para conseguir suas imagens
 				const xmlChannels = new XMLHttpRequest();
 				xmlChannels.onreadystatechange = () => {
@@ -172,7 +169,6 @@ const App = () => {
                     '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
                 );
                 xmlChannels.send();
-
                 // Terceira request usando as IDs dos videos para conseguir seus detalhes
                 const xmlDetails = new XMLHttpRequest();
                 xmlDetails.onreadystatechange = () => {
@@ -234,7 +230,6 @@ const App = () => {
     function handleSelect(id: string | null) {
         setListTransition(true);
         const prevId = activeResult;
-        
         if (prevId && id === null) {
             setTimeout(() => {
                     setActiveResult(id);
