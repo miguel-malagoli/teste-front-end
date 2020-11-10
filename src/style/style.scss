@@ -36,8 +36,14 @@ $color-theme-hl: #961E1E;
     justify-content: center;
     align-items: flex-end;
     transition: left .5s ease, top .5s ease;
+    @media only screen and (min-width: 1200px) {
+        height: calc(50vh + 3.5vw);
+    }
     &.pesquisa_top {
         top: calc(-50vh + 60px);
+        @media only screen and (min-width: 1200px) {
+            top: calc(-50vh + 3.5vw);
+        }
     }
     &.pesquisa_left {
         left: -100vw;
@@ -49,6 +55,9 @@ $color-theme-hl: #961E1E;
         display: flex;
         justify-content: center;
         align-items: center;
+        @media only screen and (min-width: 1200px) {
+            height: 7vw;
+        }
     }
 
     .pesquisa__barra {
@@ -63,7 +72,7 @@ $color-theme-hl: #961E1E;
         display: flex;
         box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
         transition: top .25s ease, box-shadow .25s ease;
-        &.pesquisa__barra_foco {
+        &.pesquisa__barra_foco, &:hover {
             top: -8px;
             box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
 
@@ -74,6 +83,10 @@ $color-theme-hl: #961E1E;
             .pesquisa__buscar, .pesquisa__voltar {
                 background: linear-gradient(135deg, transparent, $color-theme), $color-theme-hl;
             }
+        }
+        @media only screen and (min-width: 1200px) {
+            height: 4vw;
+            max-width: 50vw;
         }
     }
 
@@ -96,6 +109,9 @@ $color-theme-hl: #961E1E;
         color: #292929;
         font-size: 1.25rem;
         font-weight: 300;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1.25vw;
+        }
         &:focus {
             outline: none;
         }
@@ -114,12 +130,20 @@ $color-theme-hl: #961E1E;
         justify-content: center;
         align-items: center;
         transition: background .25s ease;
+        cursor: pointer;
+        @media only screen and (min-width: 1200px) {
+            width: 6vw;
+        }
     }
     
     .pesquisa__icone {
         height: 1.75rem;
         width: 1.75rem;
         fill: $color-light-hl;
+        @media only screen and (min-width: 1200px) {
+            height: 1.75vw;
+            width: 1.75vw;
+        }
     }
 
     .pesquisa__voltar {
@@ -133,6 +157,10 @@ $color-theme-hl: #961E1E;
         justify-content: center;
         align-items: center;
         transition: background .25s ease;
+        cursor: pointer;
+        @media only screen and (min-width: 1200px) {
+            width: 6vw;
+        }
     }
     
     .pesquisa__titulo {
