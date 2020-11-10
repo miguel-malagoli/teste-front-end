@@ -28,7 +28,7 @@ const App = () => {
                 window.onscroll = null;
             }
         }
-    }, [pageToken, statistics, activeResult, searchEnd, searchError])
+    }, [pageToken, statistics, channels, activeResult, searchEnd, searchError])
 
 	// Realizar pesquisa com os termos atuais
     function search() {

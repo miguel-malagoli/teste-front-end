@@ -255,8 +255,12 @@ $color-theme-hl: #961E1E;
     max-width: 400px;
     overflow: hidden;
     opacity: 1;
-    float: none;
-    clear: both;
+    cursor: pointer;
+    @media only screen and (min-width: 1200px) {
+        max-width: 24vw;
+        margin: 2.5vw 1vw 0;
+        max-height: 100vw;
+    }
     &:focus {
         outline: none;
     }
@@ -287,10 +291,15 @@ $color-theme-hl: #961E1E;
         max-width: 100%;
         opacity: 1;
         pointer-events: all;
-        float: none;
-        clear: both;
         margin-top: 24px;
         transition: max-width .5s ease;
+        cursor: auto;
+        @media only screen and (min-width: 1200px) {
+            margin-top: 2.5vw;
+            min-height: calc(100vh - 7vw);
+            max-height: 1000vw;
+            max-width: 60vw;
+        }
 
         .resultado__conteudo {
             background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
@@ -359,9 +368,22 @@ $color-theme-hl: #961E1E;
         pointer-events: none;
     }
 
+    .resultado__disposicao {
+        display: flex;
+        flex-direction: column;
+        @media only screen and (min-width: 1200px) {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
     .resultado__info {
         display: flex;
         margin-top: 12px;
+        @media only screen and (min-width: 1200px) {
+            margin-top: 1vw;
+            flex: 2;
+        }
     }
 
     .resultado__imagem {
@@ -369,6 +391,11 @@ $color-theme-hl: #961E1E;
         height: 48px;
         border-radius: 50%;
         margin-right: 16px;
+        @media only screen and (min-width: 1200px) {
+            width: 3vw;
+            height: 3vw;
+            margin-right: 1.2vw;
+        }
     }
 
     .resultado__dados {
@@ -385,12 +412,19 @@ $color-theme-hl: #961E1E;
         opacity: 1;
         max-height: 4.5rem;
         overflow: hidden;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1vw;
+            line-height: 1.25vw;
+        }
     }
 
     .resultado__canal {
         font-family: 'Roboto';
         font-weight: 300;
         font-size: 1.125rem;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1vw;
+        }
     }
 
     .resultado__visualizacoes {
@@ -404,16 +438,24 @@ $color-theme-hl: #961E1E;
         overflow: hidden;
         text-overflow: ellipsis;
         width: 100%;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1.25vw;
+        }
     }
 
     .resultado__descricao {
-        font-family: 'Actor';
+        font-family: 'Libre Franklin';
         font-weight: 400;
         font-size: 1.25rem;
         line-height: 1.5rem;
         white-space: pre-wrap;
         word-wrap: break-word;
         margin-top: 1.25rem;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1vw;
+            line-height: 1.5vw;
+            margin: .75vw 1vw .25vw;
+        }
     }
 
     .resultado__detalhes {
@@ -429,6 +471,12 @@ $color-theme-hl: #961E1E;
         line-height: 1.375rem;
         padding: 1rem 0;
         transition: background .25s ease;
+        cursor: pointer;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1vw;
+            line-height: 1.5vw;
+            padding: 1vw 0;
+        }
         &:focus {
             outline: none;
         }
@@ -446,6 +494,11 @@ $color-theme-hl: #961E1E;
         max-height: 4rem;
         padding: 20px;
         transition: opacity .25s ease, max-height .25s ease, padding .25s ease;
+        @media only screen and (min-width: 1200px) {
+            max-height: 3vw;
+            padding: .5vw 1vw 0 0;
+            flex: 1;
+        }
     }
 
     .interacao__contagem {
@@ -466,6 +519,11 @@ $color-theme-hl: #961E1E;
         width: 1.5rem;
         height: 1.5rem;
         margin-right: 1rem;
+        @media only screen and (min-width: 1200px) {
+            width: 1.25vw;
+            height: 1.25vw;
+            margin-right: 1vw;
+        }
     }
 
     .interacao__dislike {
@@ -473,18 +531,29 @@ $color-theme-hl: #961E1E;
         width: 1.5rem;
         height: 1.5rem;
         margin-left: 1rem;
+        @media only screen and (min-width: 1200px) {
+            width: 1.25vw;
+            height: 1.25vw;
+            margin-left: 1vw;
+        }
     }
 
     .interacao__numero {
         font-family: 'Roboto';
         font-weight: 300;
         font-size: 1.375rem;
+        @media only screen and (min-width: 1200px) {
+            font-size: 1.2vw;
+        }
     }
 
     .interacao__barra {
         display: flex;
         width: 100%;
         margin-top: 0.5rem;
+        @media only screen and (min-width: 1200px) {
+            margin-top: .5vw;
+        }
     }
 
     .interacao__barraLike {
