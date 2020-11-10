@@ -50,6 +50,7 @@ const Resultado = (props: {
                     <img
                         className="resultado__imagem" 
                         src={props.profileImg}
+                        alt={'Imagem de perfil de ' + props.video.snippet.channelTitle}
                     />
                     <div className="resultado__dados">
                         <div className={'resultado__titulo ' + props.video.id.videoId}>
@@ -79,12 +80,12 @@ const Resultado = (props: {
                                 />
                             </svg>
                             <p className="interacao__numero">
-                                {props.stats?.likeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                {props.stats?.likeCount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                             </p>
                         </div>
                         <div className="interacao__metade">
                             <p className="interacao__numero">
-                                {props.stats?.dislikeCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                {props.stats?.dislikeCount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                             </p>
                             <svg className="interacao__dislike" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img">
                                 <title>Dislike</title>
@@ -99,9 +100,13 @@ const Resultado = (props: {
                         </div>
                     </div>
                     <div className="interacao__barra">
-                        <div className="interacao__barraLike" style={{flex: likeRatio}}></div>
+                        <div className="interacao__barraLike"
+                            style={{flex: (Number.isNaN(likeRatio) ? 0 : likeRatio)}}>
+                        </div>
                         <div className="interacao__barraMeio"></div>
-                        <div className="interacao__barraDislike" style={{flex: (100 - likeRatio)}}></div>
+                        <div className="interacao__barraDislike"
+                            style={{flex: (Number.isNaN(likeRatio) ? 0 : (100 - likeRatio))}}>
+                        </div>
                     </div>
                 </div>
                 <div className="resultado__descricao">

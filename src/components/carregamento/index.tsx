@@ -1,8 +1,8 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 
-const Carregamento = (props: {hasMoreResults: boolean, elementRef: RefObject<HTMLDivElement>}) => {
+const Carregamento = (props: {hasMoreResults: boolean}) => {
     return (
-        <footer className="carregamento" ref={props.elementRef}>
+        <footer className="carregamento">
             {props.hasMoreResults ?
             <div className="carregamento__animacao">
                 <div className="carregamento__ponto" style={{animationDelay: '0s'}}></div>

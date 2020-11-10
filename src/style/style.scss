@@ -57,6 +57,7 @@ $color-theme-hl: #961E1E;
         background-color: transparent;
         height: 72px;
         width: 100%;
+        max-width: 640px;
         margin: 0 24px;
         border-radius: 12px;
         display: flex;
@@ -144,6 +145,7 @@ $color-theme-hl: #961E1E;
         align-items: center;
         transition: background .25s ease;
         padding: 12px;
+        height: 100%;
     }
 
     .pesquisa__texto {
@@ -181,11 +183,15 @@ $color-theme-hl: #961E1E;
 // Bloco "Lista"
 .lista {
     position: relative;
+    display: flex;
     width: 100%;
     padding: 104px 24px 24px;
     opacity: 1;
     transition: opacity .15s linear;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 88px);
+    align-items: stretch;
+    justify-content: center;
+    flex-flow: row wrap;
     &.lista_transicao {
         opacity: 0;
     }
@@ -198,7 +204,7 @@ $color-theme-hl: #961E1E;
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    margin-top: 24px;
+    margin: 24px 12px 0;
     box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 0px;
     transition:
         top .25s ease,
@@ -207,6 +213,8 @@ $color-theme-hl: #961E1E;
         box-shadow .25s ease;
     min-height: 0;
     max-height: 800px;
+    width: 100%;
+    max-width: 400px;
     overflow: hidden;
     opacity: 1;
     float: none;
@@ -236,13 +244,15 @@ $color-theme-hl: #961E1E;
     &.resultado_ativo {
         top: -8px;
         box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
-        min-height: calc(100vh - 128px);
+        min-height: calc(100vh - 152px);
         max-height: 1000vh;
+        max-width: 100%;
         opacity: 1;
         pointer-events: all;
         float: none;
         clear: both;
         margin-top: 24px;
+        transition: max-width .5s ease;
 
         .resultado__conteudo {
             background: linear-gradient(135deg, transparent, $color-light), $color-light-hl;
@@ -261,11 +271,13 @@ $color-theme-hl: #961E1E;
             opacity: 0;
             max-height: 0;
             margin-bottom: 0;
+            transition: opacity .25s ease, max-height .25s ease, margin .25s ease;
         }
 
         .resultado__visualizacoes {
             opacity: 1;
             max-height: 3rem;
+            transition: opacity .25s ease, max-height .25s ease;
         }
     }
 
@@ -332,7 +344,6 @@ $color-theme-hl: #961E1E;
         font-size: 1.25rem;
         line-height: 1.5rem;
         margin-bottom: 0.25rem;
-        transition: opacity .25s ease, max-height .25s ease, margin .25s ease;
         opacity: 1;
         max-height: 4.5rem;
         overflow: hidden;
@@ -349,7 +360,6 @@ $color-theme-hl: #961E1E;
         font-weight: 400;
         font-size: 1.375rem;
         margin-top: 0.2rem;
-        transition: opacity .25s ease, max-height .25s ease;
         opacity: 0;
         max-height: 0;
         white-space: nowrap;
@@ -391,13 +401,13 @@ $color-theme-hl: #961E1E;
 .interacao {
     width: 100%;
     padding: 0px;
-    transition: opacity .25s ease, max-height .25s ease, padding .25s ease;
     opacity: 0;
     max-height: 0;
     &.interacao_ativa {
         opacity: 1;
         max-height: 4rem;
         padding: 20px;
+        transition: opacity .25s ease, max-height .25s ease, padding .25s ease;
     }
 
     .interacao__contagem {
@@ -462,6 +472,7 @@ $color-theme-hl: #961E1E;
 // Bloco "Carregamento"
 .carregamento {
     height: 64px;
+    margin-top: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
