@@ -25,7 +25,7 @@ const Resultado = (props: {
                 (props.active ? ' resultado_ativo' : '') +
                 (props.hidden ? ' resultado_escondido' : '')
             }
-            tabIndex={0}
+            tabIndex={(props.active ? -1 : 0)}
             onClick={(props.active ? () => {} : () => {
                 props.handleTitle(props.video.snippet.title);
                 props.handleSelect(props.video.id.videoId);
@@ -43,7 +43,8 @@ const Resultado = (props: {
                         title={props.video.id.videoId}
                         src={'https://www.youtube.com/embed/' + props.video.id.videoId}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen>
+                        allowFullScreen
+                        tabIndex={(props.active ? 0 : -1)}>
                     </iframe>
                 </div>
                 <div className="resultado__disposicao">
@@ -117,7 +118,7 @@ const Resultado = (props: {
             </div>
             <button className="resultado__detalhes"
                 type="button"
-                tabIndex={-1}
+                tabIndex={(props.active ? 0 : -1)}
                 onClick={(props.active ? () => {
                     props.handleTitle(null);
                     props.handleSelect(null);

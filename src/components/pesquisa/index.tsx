@@ -43,9 +43,12 @@ const Pesquisa = (props: {
                             onChange={changeTerms}
                             required
                             autoFocus
+                            tabIndex={(props.activeTitle ? -1 : 0)}
+                            minLength={3}
+                            maxLength={50}
                         />
                     </div>
-                    <button className="pesquisa__buscar" type="submit">
+                    <button className="pesquisa__buscar" type="submit" tabIndex={(props.activeTitle ? -1 : 0)}>
                         <svg className="pesquisa__icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img">
                             <title>Buscar</title>
                             <path d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2
@@ -60,7 +63,10 @@ const Pesquisa = (props: {
             </div>
             <div className="pesquisa__metade">
                 <div className="pesquisa__barra">
-                    <button className="pesquisa__voltar" type="button" onClick={() => {props.handleClear()}}>
+                    <button className="pesquisa__voltar"
+                        type="button"
+                        onClick={() => {props.handleClear()}}
+                        tabIndex={(props.activeTitle ? 0 : -1)}>
                         <svg className="pesquisa__icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img">
                             <title>Voltar</title>
                             <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>

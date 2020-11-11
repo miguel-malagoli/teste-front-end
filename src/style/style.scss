@@ -275,10 +275,8 @@ body {
         margin: 2.5vw 1vw 0;
         max-height: 100vw;
     }
-    &:focus {
+    &:hover, &:focus {
         outline: none;
-    }
-    &:hover {
         top: -8px;
         box-shadow: rgb(0, 0, 0, 0.5) 0px 8px 8px;
 
