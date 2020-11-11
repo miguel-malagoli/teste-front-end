@@ -16,6 +16,20 @@ $color-theme-hl: #961E1E;
     font-size: 16px;
     background-color: $color-dark;
 }
+// Barra de scroll
+body::-webkit-scrollbar {
+    width: 1rem;
+}
+body::-webkit-scrollbar-track {
+    background-color: $color-theme;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: $color-dark;
+}
+body {
+    scrollbar-width: 1rem;
+    scrollbar-color: $color-dark $color-theme;
+}
 
 // Base
 .app {
