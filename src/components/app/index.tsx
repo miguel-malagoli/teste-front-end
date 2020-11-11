@@ -8,6 +8,7 @@ const App = () => {
 
     // Hooks de estado
     const [terms, setTerms] = useState('');
+    const [fixedTerms, setFixedTerms] = useState('');
 	const [results, setResults] = useState<Array<never> | null>(null);
 	const [statistics, setStatistics] = useState<StatsRef>({});
     const [channels, setChannels] = useState<ChannelRef>({});
@@ -28,10 +29,11 @@ const App = () => {
                 window.onscroll = null;
             }
         }
-    }, [pageToken, statistics, channels, activeResult, searchEnd, searchError])
+    }, [fixedTerms, pageToken, statistics, channels, activeResult, searchEnd, searchError]);
 
 	// Realizar pesquisa com os termos atuais
     function search() {
+        setFixedTerms(terms);
         // Request para os snippets
         const xmlResults = new XMLHttpRequest();
         xmlResults.onreadystatechange = () => {
@@ -155,7 +157,7 @@ const App = () => {
                                 return ref;
                             }, {}
                         );
-                        const newChannelRef = channels;
+                        const newChannelRef = {...channels};
                         for (let [key, value] of Object.entries(newChannels)) {
                             newChannelRef[key] = value as string;
                         }
@@ -185,7 +187,7 @@ const App = () => {
                                 return ref;
                             }, {}
                         );
-                        const newStatsRef = statistics;
+                        const newStatsRef = {...statistics};
                         for (let [key, value] of Object.entries(newStats)) {
                             newStatsRef[key] = {
                                 dislikeCount: (value as any).dislikeCount,
@@ -219,7 +221,7 @@ const App = () => {
         xmlResults.open(
             'GET',
             'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
-            terms.replace(/[^a-zA-Z0-9 ]/g, '') +
+            fixedTerms.replace(/[^a-zA-Z0-9 ]/g, '') +
             '&pageToken=' + page +
             '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
         );
@@ -244,6 +246,8 @@ const App = () => {
             setActiveResult(id);
         }
     }
+
+    console.log('render app');
 
     // Renderizar
 	return (

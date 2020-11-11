@@ -23,6 +23,8 @@ const Lista = (props: {
     transition: boolean
     }) => {
 
+    console.log('render lista');
+
     return (
         <ul className={'lista' + (props.transition ? ' lista_transicao' : '')}>
             {props.results?.map((r: any) => {
