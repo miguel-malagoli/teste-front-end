@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Pesquisa from '../pesquisa';
-import Lista, {ChannelRef, StatsRef} from '../lista';
-import Carregamento from '../carregamento';
-import Erro from '../erro';
+import Pesquisa from './Pesquisa';
+import Lista, {ChannelRef, StatsRef} from './Lista';
+import Carregamento from './Carregamento';
+import Erro from './Erro';
 
 const App = () => {
 
@@ -39,7 +39,6 @@ const App = () => {
         xmlResults.onreadystatechange = () => {
             if (xmlResults.readyState === 4 && xmlResults.status === 200) {
                 const response = JSON.parse(xmlResults.responseText);
-                console.log(response);
                 // Resetar e abortar se não houver resultados
                 if (response.items.length <= 0) {
                     setResults(null);
@@ -61,7 +60,6 @@ const App = () => {
 				const xmlChannels = new XMLHttpRequest();
 				xmlChannels.onreadystatechange = () => {
                     if (xmlChannels.readyState === 4 && xmlChannels.status === 200) {
-                        console.log(JSON.parse(xmlChannels.responseText));
                         const newChannels = JSON.parse(xmlChannels.responseText).items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = i.snippet.thumbnails.default.url;
@@ -82,7 +80,6 @@ const App = () => {
                 const xmlDetails = new XMLHttpRequest();
                 xmlDetails.onreadystatechange = () => {
                     if (xmlDetails.readyState === 4 && xmlDetails.status === 200) {
-                        console.log(JSON.parse(xmlDetails.responseText));
                         const newStats = JSON.parse(xmlDetails.responseText).items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = {
@@ -113,7 +110,6 @@ const App = () => {
                 }
             } else if (xmlResults.readyState === 4 && xmlResults.status >= 400) {
                 setSearchError(JSON.parse(xmlResults.responseText).error);
-                console.log(JSON.parse(xmlResults.responseText));
             }
         };
         xmlResults.open(
@@ -132,7 +128,6 @@ const App = () => {
         xmlResults.onreadystatechange = () => {
             if (xmlResults.readyState === 4 && xmlResults.status === 200) {
                 const response = JSON.parse(xmlResults.responseText);
-                console.log(response);
                 // Resetar e abortar se não houver resultados
                 if (response.items.length <= 0) {
                     setSearchEnd(true);
@@ -150,7 +145,6 @@ const App = () => {
 				const xmlChannels = new XMLHttpRequest();
 				xmlChannels.onreadystatechange = () => {
                     if (xmlChannels.readyState === 4 && xmlChannels.status === 200) {
-                        console.log(JSON.parse(xmlChannels.responseText));
                         const newChannels = JSON.parse(xmlChannels.responseText).items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = i.snippet.thumbnails.default.url;
@@ -175,7 +169,6 @@ const App = () => {
                 const xmlDetails = new XMLHttpRequest();
                 xmlDetails.onreadystatechange = () => {
                     if (xmlDetails.readyState === 4 && xmlDetails.status === 200) {
-                        console.log(JSON.parse(xmlDetails.responseText));
                         const newStats = JSON.parse(xmlDetails.responseText).items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = {
@@ -246,8 +239,6 @@ const App = () => {
             setActiveResult(id);
         }
     }
-
-    console.log('render app');
 
     // Renderizar
 	return (

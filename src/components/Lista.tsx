@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import Resultado from '../resultado';
+import React from 'react';
+import Resultado from './Resultado';
 
+// Interfaces para receber referências de imagem de canal e feedback de vídeo
 export interface ChannelRef {
 	[index: string]: string
 }
@@ -22,8 +23,6 @@ const Lista = (props: {
     handleActiveResult: (id: string | null) => void,
     transition: boolean
     }) => {
-
-    console.log('render lista');
 
     return (
         <ul className={'lista' + (props.transition ? ' lista_transicao' : '')}>

@@ -12,7 +12,6 @@ const Pesquisa = (props: {
 
     // Hooks de estado
     const [focus, setFocus] = useState(false);
-    //const [terms, setTerms] = useState('');
 
     // Receber input do usuário
     function changeTerms(event: ChangeEvent<HTMLInputElement>) {

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Componente de resultado
 const Resultado = (props: {
         video: any,
         profileImg: string,
@@ -10,6 +11,7 @@ const Resultado = (props: {
         handleTitle: (title: string |null) => void
     }) => {
 
+    // Calcular a proporção de likes e dislikes antes do render
     const likeRatio = props.stats ?
         Math.round(
             Number.parseInt(props.stats.likeCount) / 
@@ -17,6 +19,7 @@ const Resultado = (props: {
         )
     : 0;
     
+    // Renderizar
     return (
         <li
             key={props.video.id.videoId}
