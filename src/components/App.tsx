@@ -6,6 +6,8 @@ import Erro from './Erro';
 
 const App = () => {
 
+    // Utilizar Axios
+    const axios = require('axios');
     // Hooks de estado
     const [terms, setTerms] = useState('');
     const [fixedTerms, setFixedTerms] = useState('');
@@ -31,16 +33,18 @@ const App = () => {
         }
     }, [fixedTerms, pageToken, statistics, channels, activeResult, searchEnd, searchError]);
 
-	// Realizar pesquisa com os termos atuais
     function search() {
         setFixedTerms(terms);
         // Request para os snippets
-        const xmlResults = new XMLHttpRequest();
-        xmlResults.onreadystatechange = () => {
-            if (xmlResults.readyState === 4 && xmlResults.status === 200) {
-                const response = JSON.parse(xmlResults.responseText);
+        axios.get(
+            'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
+            terms.replace(/[^a-zA-Z0-9 ]/g, '') +
+            '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+        ).then((resp: any) => {
+            if (resp.request.readyState === 4 && resp.request.status === 200) {
+                const items = resp.data.items;
                 // Resetar e abortar se não houver resultados
-                if (response.items.length <= 0) {
+                if (items.length <= 0) {
                     setResults(null);
                     setPageToken('');
                     setStatistics({});
@@ -50,17 +54,27 @@ const App = () => {
                     return;
                 }
                 // Do contrário, preparar as próximas duas requests
-                setResults(response.items);
+                setResults(items);
                 setSearchEnd(false);
                 setSearchError(null);
                 window.scrollTo({top: 0, left: 0, behavior: "smooth"});
-				const videoIDs: string = response.items.map((i: any) => i.id.videoId).join();
-				const channelIDs: string = response.items.map((i: any) => i.snippet.channelId).join();
-				// Segunda request usando as IDs dos canais para conseguir suas imagens
-				const xmlChannels = new XMLHttpRequest();
-				xmlChannels.onreadystatechange = () => {
-                    if (xmlChannels.readyState === 4 && xmlChannels.status === 200) {
-                        const newChannels = JSON.parse(xmlChannels.responseText).items.reduce(
+				const videoIDs: string = items.map((i: any) => i.id.videoId).join();
+                const channelIDs: string = items.map((i: any) => i.snippet.channelId).join();
+                // Atualizar a token para o scroll infinito
+                if (resp.data.nextPageToken) {
+                    setPageToken(resp.data.nextPageToken);
+                } else {
+                    setPageToken('');
+                    setSearchEnd(true);
+                }
+                // Segunda request usando as IDs dos canais para conseguir suas imagens
+                axios.get(
+                    'https://www.googleapis.com/youtube/v3/channels?part=snippet&id=' +
+                    channelIDs + 
+                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+                ).then((channelResp: any) => {
+                    if (channelResp.request.readyState === 4 && channelResp.request.status === 200) {
+                        const newChannels = channelResp.data.items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = i.snippet.thumbnails.default.url;
                                 return ref;
@@ -68,19 +82,15 @@ const App = () => {
                         );
                         setChannels(newChannels);
                     }
-                }
-                xmlChannels.open(
-                    'GET',
-                    'https://www.googleapis.com/youtube/v3/channels?part=snippet&id=' +
-                    channelIDs + 
-                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-                );
-                xmlChannels.send();
+                });
                 // Terceira request usando as IDs dos videos para conseguir seus detalhes
-                const xmlDetails = new XMLHttpRequest();
-                xmlDetails.onreadystatechange = () => {
-                    if (xmlDetails.readyState === 4 && xmlDetails.status === 200) {
-                        const newStats = JSON.parse(xmlDetails.responseText).items.reduce(
+                axios.get(
+                    'https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=' +
+                    videoIDs + 
+                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+                ).then((statResp: any) => {
+                    if (statResp.request.readyState === 4 && statResp.request.status === 200) {
+                        const newStats = statResp.data.items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = {
                                     dislikeCount: i.statistics.dislikeCount,
@@ -93,59 +103,51 @@ const App = () => {
                         );
                         setStatistics(newStats);
                     }
-                }
-                xmlDetails.open(
-                    'GET',
-                    'https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=' +
-                    videoIDs + 
-                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-                );
-                xmlDetails.send();
-                // Atualizar a token para o scroll infinito
-                if (response.nextPageToken) {
-                    setPageToken(response.nextPageToken);
-                } else {
-                    setPageToken('');
-                    setSearchEnd(true);
-                }
-            } else if (xmlResults.readyState === 4 && xmlResults.status >= 400) {
-                setSearchError(JSON.parse(xmlResults.responseText).error);
+                });
+            } else if (resp.request.readyState === 4 && resp.request.status >= 400) {
+                setSearchError(resp.data.error);
             }
-        };
-        xmlResults.open(
-            'GET',
-            'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
-            terms.replace(/[^a-zA-Z0-9 ]/g, '') +
-            '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-        );
-        xmlResults.send();
+        });
     }
 
     // Estender a pesquisa à próxima página
     function continueSearch(page: string) {
         // Request para os snippets
-        const xmlResults = new XMLHttpRequest();
-        xmlResults.onreadystatechange = () => {
-            if (xmlResults.readyState === 4 && xmlResults.status === 200) {
-                const response = JSON.parse(xmlResults.responseText);
+        axios.get(
+            'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
+            fixedTerms.replace(/[^a-zA-Z0-9 ]/g, '') +
+            '&pageToken=' + page +
+            '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+        ).then((resp: any) => {
+            if (resp.request.readyState === 4 && resp.request.status === 200) {
                 // Resetar e abortar se não houver resultados
-                if (response.items.length <= 0) {
+                if (resp.data.items.length <= 0) {
                     setSearchEnd(true);
                     setPageToken('');
                     return;
                 }
                 // Do contrário, preparar as próximas duas requests
-                const newItems = response.items.filter((i: any) => {
+                const newItems = resp.data.items.filter((i: any) => {
                     return !(Object.keys(statistics).includes(i.id.videoId));
                 });
                 if (results) setResults(results.concat(newItems));
 				const videoIDs: string = newItems.map((i: any) => i.id.videoId).join();
-				const channelIDs: string = newItems.map((i: any) => i.snippet.channelId).join();
-				// Segunda request usando as IDs dos canais para conseguir suas imagens
-				const xmlChannels = new XMLHttpRequest();
-				xmlChannels.onreadystatechange = () => {
-                    if (xmlChannels.readyState === 4 && xmlChannels.status === 200) {
-                        const newChannels = JSON.parse(xmlChannels.responseText).items.reduce(
+                const channelIDs: string = newItems.map((i: any) => i.snippet.channelId).join();
+                // Atualizar a token para o scroll infinito
+                if (resp.data.nextPageToken) {
+                    setPageToken(resp.data.nextPageToken);
+                } else {
+                    setPageToken('');
+                    setSearchEnd(true);
+                }
+                // Segunda request usando as IDs dos canais para conseguir suas imagens
+                axios.get(
+                    'https://www.googleapis.com/youtube/v3/channels?part=snippet&id=' +
+                    channelIDs + 
+                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+                ).then((channelResp: any) => {
+                    if (channelResp.request.readyState === 4 && channelResp.request.status === 200) {
+                        const newChannels = channelResp.data.items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = i.snippet.thumbnails.default.url;
                                 return ref;
@@ -157,19 +159,15 @@ const App = () => {
                         }
                         setChannels(newChannelRef);
                     }
-                }
-                xmlChannels.open(
-                    'GET',
-                    'https://www.googleapis.com/youtube/v3/channels?part=snippet&id=' +
-                    channelIDs + 
-                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-                );
-                xmlChannels.send();
+                });
                 // Terceira request usando as IDs dos videos para conseguir seus detalhes
-                const xmlDetails = new XMLHttpRequest();
-                xmlDetails.onreadystatechange = () => {
-                    if (xmlDetails.readyState === 4 && xmlDetails.status === 200) {
-                        const newStats = JSON.parse(xmlDetails.responseText).items.reduce(
+                axios.get(
+                    'https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=' +
+                    videoIDs + 
+                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
+                ).then((statResp: any) => {
+                    if (statResp.request.readyState === 4 && statResp.request.status === 200) {
+                        const newStats = statResp.data.items.reduce(
                             (ref: any, i: any) => {
                                 ref[i.id] = {
                                     dislikeCount: i.statistics.dislikeCount,
@@ -191,34 +189,12 @@ const App = () => {
                         }
                         setStatistics(newStatsRef);
                     }
-                }
-                xmlDetails.open(
-                    'GET',
-                    'https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=' +
-                    videoIDs + 
-                    '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-                );
-                xmlDetails.send();
-                // Atualizar a token para o scroll infinito
-                if (response.nextPageToken) {
-                    setPageToken(response.nextPageToken);
-                } else {
-                    setPageToken('');
-                    setSearchEnd(true);
-                }
-
-            } else if (xmlResults.readyState === 4 && xmlResults.status >= 400) {
-                setSearchError(JSON.parse(xmlResults.responseText).error);
+                });
+            } else if (resp.request.readyState === 4 && resp.request.status >= 400) {
+                setPageToken('');
+                setSearchEnd(true);
             }
-        };
-        xmlResults.open(
-            'GET',
-            'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=12&q=' +
-            fixedTerms.replace(/[^a-zA-Z0-9 ]/g, '') +
-            '&pageToken=' + page +
-            '&key=AIzaSyBbS29keWaqCw9J7NLNfhxFbvc0c5ceGIc'
-        );
-        xmlResults.send();
+        });
     }
 
     // Lidar com a seleção de um resultado da lista como o resultado "ativo"
